@@ -12,7 +12,6 @@ begin
   for i := 0 to size - 1 do
   begin
     readln(numbers[i]);
-    writeln('aqui');
   end;
   
   sum := 0;
