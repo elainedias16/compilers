@@ -81,4 +81,4 @@ BOOLEAN_VAL : BOOLEAN_VALUE ;
 
 ID          : ID_VALUE ;
 
-UNKNOWN : . ;
+UNKNOWN : . {System.out.println(getText()) ; System.exit(0);};
