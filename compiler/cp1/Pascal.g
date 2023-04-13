@@ -4,7 +4,7 @@ fragment INT_VALUE  : [0-9]+ ;
 fragment REAL_VALUE : INT_VALUE '.' INT_VALUE ;
 fragment BOOLEAN_VALUE : (('true') | ('false'));
 fragment ID_VALUE   : [A-Za-z][A-Za-z0-9_]* ;
-fragment STR_VALUE  : '"'~["]*'"' ;
+fragment STR_VALUE  : ['] ~[']* ['] ;
 fragment LINE_COMMENT : '//' ~[\n]* [\n] ;
 fragment MULTILINE_COMMENT1 :  '{' ~[}]* '}' ;
 
@@ -29,7 +29,7 @@ BOOLEAN     : 'boolean' ;
 STRING      : 'string' ;
 CHAR        : 'char' ;
 ARRAY       : 'array' ;
-TYPE        : 'type' ;
+// TYPE        : 'type' ;
 RANGE       : '..' ;
 OF          : 'of' ;
 
@@ -37,16 +37,13 @@ OF          : 'of' ;
 IF          : 'if' ;
 THEN        : 'then' ;
 ELSE        : 'else' ;
-FOR         : 'for' ;
-TO          : 'to' ;
-DOWNTO      : 'downto' ;
+WHILE       : 'while' ;
 DO          : 'do' ;
 
-// Operadores lógicos.
-AND         : 'and' ; 
-OR          : 'or' ;
+// Operadores lógicos.   
+AND         : 'and' ;         
+OR          : 'or' ;    
 NOT         : 'not' ;
-NIL         : 'nil' ;
 
 // Operadores aritméticos e de comparação. OK
 PLUS        : '+' ;
@@ -67,7 +64,7 @@ RPAR        : ')' ;
 NOTEQUAL    : '<>' ; 
 LEQ         : '<=' ;
 BEQ         : '>=' ;
-BECOMES     : ':=' ;
+BECOMES     : ':=' ;  
 
 // Funções matemáticas.
 MOD         : 'mod' ;
@@ -75,6 +72,7 @@ MOD         : 'mod' ;
 // Manipulação de entrada e saída em stdin e stdout.
 READ        : 'read' ;
 WRITE       : 'write' ;
+WRITELN       : 'writeln' ;
 
 INT_VAL     : INT_VALUE ;
 REAL_VAL    : REAL_VALUE ;
@@ -84,6 +82,3 @@ BOOLEAN_VAL : BOOLEAN_VALUE ;
 ID          : ID_VALUE ;
 
 UNKNOWN : . ;
-
-// TO DO:
-// - construir casos de teste;

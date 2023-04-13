@@ -26,10 +26,10 @@ begin
       begin
         if op = '/' then;
         begin
-          result := a div b;
+          result := a / b;
         end;
       end;
     end;
   end;
-  writeln(result)
+  write(result);
 end.

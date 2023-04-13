@@ -1,17 +1,23 @@
 program sum;
 var
-    X, Y : Integer;
+    X, Y : real;
+
+const
+    const_1 = 10;
 begin
-    Writeln('This program will sum two integers!');
+    write('This program will sum two numbers!');
 
-    Write('Please, type the first one: ');
-    Readln(X);
+    write('Please, type the first one: ');
+    read(X);
 
-    Write('Please, type the another one: ');
-    Readln(Y);
+    write('Please, type the another one: ');
+    read(Y);
 
-    Writeln('X + Y =  ' , X + Y);
-    //Writeln('The sum of ',X,' and ',Y,' is ',X+Y);
-    // Writeln('X is : ' , X);
-    // Writeln('Y is : ' , Y);
+    write('X + Y =  ' , X + Y);
+    write('X - Y =  ' , X - Y);
+    write('X * Y =  ' , X * Y);
+    write('X / Y =  ' , X / Y);
+    //Write('X mod Y =  ' , X mod Y);
+
+    write(const_1);
 end.
