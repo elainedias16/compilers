@@ -4,7 +4,7 @@ var
 begin
   read(num);
 
-  if (num MOD 2 = 1) then begin
+  if (num mod 2 = 1) then begin
     write(num);
     write(' is odd!');
   end

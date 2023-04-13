@@ -1,11 +1,11 @@
 program sum;
-var
+var 
     X, Y : real;
 
 const
-    const_1 = 10;
+    const_1 = 10.5;
 begin
-    write('This program will sum two numbers!');
+    write('This program operates with 2 numbers!');
 
     write('Please, type the first one: ');
     read(X);
@@ -13,11 +13,14 @@ begin
     write('Please, type the another one: ');
     read(Y);
 
-    write('X + Y =  ' , X + Y);
-    write('X - Y =  ' , X - Y);
-    write('X * Y =  ' , X * Y);
-    write('X / Y =  ' , X / Y);
-    //Write('X mod Y =  ' , X mod Y);
+    writeln('X + Y =  ' , X + Y);
+    writeln('X - Y =  ' , X - Y);
+    writeln('X * Y =  ' , X * Y);
+    writeln('X / Y =  ' , X / Y);
+    writeln('X > Y =  ' , X > Y);
+    writeln('X >= Y =  ' , X >= Y);
+    writeln('X < Y =  ' , X < Y);
+    writeln('X <= Y =  ' , X <= Y);
 
     write(const_1);
 end.
