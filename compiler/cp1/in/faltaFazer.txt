@@ -1,0 +1,50 @@
+
+fragment REAL_VALUE : INT_VALUE '.' INT_VALUE ;
+
+fragment ID_VALUE   : [A-Za-z][A-Za-z0-9_]* ;
+fragment STR_VALUE  : '"'~["]*'"' ;
+fragment LINE_COMMENT : '//' ~[\n]* [\n] ;
+fragment MULTILINE_COMMENT1 :  '{' ~[}]* '}' ;
+
+// Ignorar comentários, espaços e quebras de linha. 
+WS          : [ \t\n]+      -> skip ;
+COMMENT     : (LINE_COMMENT | MULTILINE_COMMENT1) -> skip ;
+
+escrever idenfificadores diferentes
+
+PROCEDURE   : 'procedure';
+
+
+REAL        : 'real' ;
+
+STRING      : 'string' ;
+ARRAY       : 'array' ;
+TYPE        : 'type' ;
+RANGE       : '..' ;
+OF          : 'of' ;
+
+FOR         : 'for' ;
+TO          : 'to' ;
+DO          : 'do' ;
+
+LESSTHAN    : '<' ;
+GREATERTHAN : '>' ;
+LBRACK      : '[' ;
+RBRACK      : ']' ;
+
+NOTEQUAL    : '<>' ; 
+LEQ         : '<=' ;
+BEQ         : '>=' ;
+
+
+// Funções matemáticas.
+MOD         : 'mod' ;
+
+INT_VAL     : INT_VALUE ;
+REAL_VAL    : REAL_VALUE ;
+STRING_VAL  : STR_VALUE ;
+BOOLEAN_VAL : BOOLEAN_VALUE ;
+
+ID          : ID_VALUE ;
+
+UNKNOWN : . ;
