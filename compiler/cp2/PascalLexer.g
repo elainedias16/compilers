@@ -2,16 +2,16 @@ lexer grammar PascalLexer;
 
 fragment INT_VALUE  : [0-9]+ ;
 fragment REAL_VALUE : INT_VALUE '.' INT_VALUE ;
+fragment SIGN       : [+\-]? ;
 fragment BOOLEAN_VALUE : (('true') | ('false'));
 fragment ID_VALUE   : [A-Za-z][A-Za-z0-9_]* ;
-fragment CHAR_VALUE : ['] ~['] ['] ;
 fragment STR_VALUE  : ['] ~[']* ['] ;
 fragment LINE_COMMENT : '//' ~[\n]* [\n] ;
-fragment MULTILINE_COMMENT1 :  '{' ~[}]* '}' ;
+fragment MULTILINE_COMMENT :  '{' ~[}]* '}' ;
 
 // Ignorar comentários, espaços e quebras de linha. 
 WS          : [ \t\n]+      -> skip ;
-COMMENT     : (LINE_COMMENT | MULTILINE_COMMENT1) -> skip ;
+COMMENT     : (LINE_COMMENT | MULTILINE_COMMENT) -> skip ;
 
 // Palavras reservadas.
 PROGRAM     : 'program' ; 
@@ -19,7 +19,6 @@ CONST       : 'const' ;
 VAR         : 'var' ;
 BEGIN       : 'begin' ;
 END         : 'end' ;
-
 FUNCTION    : 'function';
 PROCEDURE   : 'procedure';
 
@@ -45,7 +44,7 @@ AND         : 'and' ;
 OR          : 'or' ;    
 NOT         : 'not' ;
 
-// Operadores aritméticos e de comparação. OK
+// Operadores aritméticos e de comparação.
 PLUS        : '+' ;
 MINUS       : '-' ; 
 ASTERISK    : '*' ; 
@@ -72,14 +71,13 @@ MOD         : 'mod' ;
 // Manipulação de entrada e saída em stdin e stdout.
 READ        : 'read' ;
 WRITE       : 'write' ;
-WRITELN       : 'writeln' ;
+WRITELN     : 'writeln' ;
 
-INT_VAL     : INT_VALUE ;
-REAL_VAL    : REAL_VALUE ;
-CHAR_VAL    : CHAR_VALUE ;
+
+INT_VAL     : SIGN INT_VALUE ;
+REAL_VAL    : SIGN REAL_VALUE ;
 STRING_VAL  : STR_VALUE ;
 BOOLEAN_VAL : BOOLEAN_VALUE ;
-
 ID          : ID_VALUE ;
 
 UNKNOWN : . {System.out.println("Error na linha: " + getLine() + " - Simbolo desconhecido: '" + getText() + "'") ; System.exit(0);};

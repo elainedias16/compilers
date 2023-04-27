@@ -13,12 +13,12 @@ program:
 ;
 
 program_pascal:
-    const_section? var_section? const_section? procedure_function* block+          
+    const_var_section* (procedure | function)* block+          
 ;
 
-procedure_function:
-    procedure
-|   function
+const_var_section:
+    const_section
+|   var_section
 ;
 
 const_section:
@@ -31,31 +31,31 @@ var_section:
 
 var:
     (ID)(COMMA ID)* COLON type
-|   array
 ;
 
 constant:
-    CONST ID COLON type
-;
-
-array:
-    ID COLON ARRAY LBRACK INT_VAL RANGE INT_VAL RBRACK OF type
-;
-
-acess_array:
-    ID LBRACK (INT_VAL | ID ) RBRACK
+    CONST ID COLON type_simple
 ;
 
 procedure:
-    PROCEDURE ID LPAR (var|constant)* RPAR SEMICOLON const_section? var_section? const_section? block SEMICOLON
+    PROCEDURE ID parameter_list SEMICOLON const_var_section* block SEMICOLON
 ;
 
 function:
-    FUNCTION ID LPAR (var|constant)* RPAR COLON (type | array) SEMICOLON const_section? var_section? block SEMICOLON
+    FUNCTION ID parameter_list COLON type SEMICOLON const_var_section* block SEMICOLON
+;
+
+parameter_list:
+    LPAR (var|constant)* RPAR
 ;
 
 block:
-    BEGIN statement* END
+    BEGIN (statement SEMICOLON)* END
+;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+acess_array:
+    ID LBRACK (INT_VAL | ID ) RBRACK
 ;
 
 statement:
@@ -68,10 +68,10 @@ statement:
 ;
 
 atribution:
-    ID BECOMES (expr_mat| expr_log | STRING | CHAR | array | acess_array | val ) SEMICOLON
+    ID BECOMES (expr_mat| expr_log | STRING | CHAR | array | acess_array | val )
 ;
 
-expr_mat:
+expr_mat:  
     LPAR expr_mat RPAR
 |   expr_mat (ASTERISK | SLASH | MOD) expr_mat
 |   expr_mat (PLUS | MINUS) expr_mat
@@ -79,25 +79,26 @@ expr_mat:
 |   REAL_VAL
 |   acess_array
 |   ID
+|   call_function_procedure
 ;
 
-expr_log:
+expr_log:  
     LPAR expr_log RPAR
 |   expr_log ( NOTEQUAL | EQUAL ) expr_log
-|   expr_mat ( LESSTHAN | GREATERTHAN | LEQ | BEQ | NOTEQUAL | EQUAL ) expr_mat
+|   expr_mat ( LESSTHAN | GREATERTHAN | LEQ | REQ | NOTEQUAL | EQUAL ) expr_mat
 |   NOT expr_log
 |   expr_log AND expr_log
 |   expr_log OR expr_log
 |   BOOLEAN_VAL
 |   ID
-; 
+;
 
 while_block:
-  WHILE (expr_log | expr_mat) DO block SEMICOLON
+  WHILE (expr_log | expr_mat) DO block 
 ;
 
 if_block:
-    IF expr_log THEN block (ELSE block)? SEMICOLON
+    IF expr_log THEN block (ELSE block)? 
 ;
 
 param_call:
@@ -108,25 +109,42 @@ param_call:
 ;
 
 call_function_procedure:
-    ID LPAR param_call RPAR SEMICOLON
+    ID LPAR param_call RPAR
 ;
 
 write_io:
-    (WRITE | WRITELN) LPAR (val|ID|expr_log|expr_mat) RPAR  SEMICOLON
+    (WRITE | WRITELN) LPAR (val|ID|expr_log|expr_mat) RPAR  
 ;
 
 read_io:
-    READ LPAR (ID | acess_array) RPAR SEMICOLON
+    READ LPAR (ID | acess_array) RPAR 
 ;
 
-type: 
-    (INTEGER | REAL | BOOLEAN | STRING | CHAR )
+type:
+    type_simple 
+|   array_type
+;
+
+type_simple: 
+    INTEGER 
+|   REAL 
+|   BOOLEAN 
+|   STRING
+|   CHAR 
+;
+
+array_type:
+   ARRAY LBRACK INT_VAL RANGE INT_VAL RBRACK OF type_simple
 ;
 
 val:
-    (INT_VAL | REAL_VAL | STRING_VAL | BOOLEAN_VAL | CHAR_VAL)
+    (INT_VAL | REAL_VAL | STRING_VAL | BOOLEAN_VAL | CHAR_VAL )
 ;
 
 // PERGUNTAR SOBRE PASSAR PARAMETRO PARA FUNÇÃO
-// PERGUNTAR SOBRE VERIFCAÇÃO DE TIPOS
 //operacoes de array
+
+
+//Limitações
+// constantes só podem receber valores hard coded 
+// constante so pode ser type simples
