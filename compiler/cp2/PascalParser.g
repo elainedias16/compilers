@@ -33,10 +33,6 @@ var:
     (ID)(COMMA ID)* COLON type
 ;
 
-constant:
-    CONST ID COLON type_simple
-;
-
 procedure:
     PROCEDURE ID parameter_list SEMICOLON const_var_section* block SEMICOLON
 ;
@@ -46,16 +42,31 @@ function:
 ;
 
 parameter_list:
-    LPAR (var|constant)* RPAR
+    LPAR parameter? RPAR
 ;
+
+var_parameter:
+    (ID)(COMMA ID)* COLON type_simple
+|   (ID)(COMMA ID)* COLON array_type
+;
+
+constant:
+    CONST ID COLON type_simple
+;
+
+//Limitações
+// constantes só podem receber valores hard coded 
+// constante so pode ser type simples
+
+parameter:
+    var_parameter
+|   constant
+|   parameter SEMICOLON parameter
+;
+
 
 block:
     BEGIN (statement SEMICOLON)* END
-;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-acess_array:
-    ID LBRACK (INT_VAL | ID ) RBRACK
 ;
 
 statement:
@@ -68,52 +79,42 @@ statement:
 ;
 
 atribution:
-    ID BECOMES (expr_mat| expr_log | STRING | CHAR | array | acess_array | val )
+    (ID | acess_array) BECOMES ( expr )
 ;
 
-expr_mat:  
-    LPAR expr_mat RPAR
-|   expr_mat (ASTERISK | SLASH | MOD) expr_mat
-|   expr_mat (PLUS | MINUS) expr_mat
-|   INT_VAL
-|   REAL_VAL
-|   acess_array
+expr:  
+    LPAR expr RPAR
+|   NOT expr
+|   MINUS expr
+|   expr (ASTERISK | SLASH | MOD ) expr
+|   expr AND expr
+|   expr (PLUS | MINUS) expr
+|   expr OR expr
+|   expr ( NOTEQUAL | EQUAL | LESSTHAN | GREATERTHAN | LEQ | BEQ ) expr
 |   ID
 |   call_function_procedure
-;
-
-expr_log:  
-    LPAR expr_log RPAR
-|   expr_log ( NOTEQUAL | EQUAL ) expr_log
-|   expr_mat ( LESSTHAN | GREATERTHAN | LEQ | REQ | NOTEQUAL | EQUAL ) expr_mat
-|   NOT expr_log
-|   expr_log AND expr_log
-|   expr_log OR expr_log
-|   BOOLEAN_VAL
-|   ID
+|   val
 ;
 
 while_block:
-  WHILE (expr_log | expr_mat) DO block 
+  WHILE expr DO block 
 ;
 
 if_block:
-    IF expr_log THEN block (ELSE block)? 
+    IF expr THEN block (ELSE block)? 
 ;
 
 param_call:
-    expr_mat
-|   expr_log
-|   call_function_procedure
+    expr
 |   param_call COMMA param_call
 ;
 
 call_function_procedure:
-    ID LPAR param_call RPAR
+    ID LPAR param_call? RPAR
 ;
 
 write_io:
-    (WRITE | WRITELN) LPAR (val|ID|expr_log|expr_mat) RPAR  
+    (WRITE | WRITELN) LPAR (expr) RPAR  
 ;
 
 read_io:
@@ -122,7 +123,7 @@ read_io:
 
 type:
     type_simple 
-|   array_type
+|   array_type_range
 ;
 
 type_simple: 
@@ -133,18 +134,18 @@ type_simple:
 |   CHAR 
 ;
 
-array_type:
+array_type_range:
    ARRAY LBRACK INT_VAL RANGE INT_VAL RBRACK OF type_simple
 ;
 
-val:
-    (INT_VAL | REAL_VAL | STRING_VAL | BOOLEAN_VAL | CHAR_VAL )
+array_type:
+   ARRAY OF type_simple
 ;
 
-// PERGUNTAR SOBRE PASSAR PARAMETRO PARA FUNÇÃO
-//operacoes de array
+acess_array:
+    ID LBRACK (INT_VAL | ID ) RBRACK
+;
 
-
-//Limitações
-// constantes só podem receber valores hard coded 
-// constante so pode ser type simples
+val:
+    ( (PLUS|MINUS)? INT_VAL | (PLUS|MINUS)?  REAL_VAL | STRING_VAL | BOOLEAN_VAL | CHAR_VAL | acess_array )
+;
