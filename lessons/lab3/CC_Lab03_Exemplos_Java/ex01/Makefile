@@ -6,7 +6,8 @@ JAVA=java
 YEAR=$(shell pwd | grep -o '20..-.')
 #ROOT=/home/zambon/Teaching/$(YEAR)/CC/labs
 #ROOT=/home/edpires/compilers/lessons/lab3/CC_Lab03_Exemplos_Java/ex01
-ROOT=/home/edpires/compilers/lessons
+#ROOT=/home/edpires/compilers/lessons
+ROOT=/home/elaine/Documents/git/compilers/lessons
 # Caminho para o JAR do ANTLR em labs/tools
 ANTLR_PATH=$(ROOT)/antlr-4.11.1-complete.jar
 # Opção de configuração do CLASSPATH para o ambiente Java
